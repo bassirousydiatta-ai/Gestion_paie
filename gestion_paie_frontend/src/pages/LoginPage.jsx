@@ -3,11 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export default function LoginPage() {
+  const [mode, setMode] = useState('login');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirmation, setPasswordConfirmation] = useState('');
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
-  const { login } = useAuth();
+  const { login, register } = useAuth();
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
@@ -15,10 +18,16 @@ export default function LoginPage() {
     setError(null);
     setSubmitting(true);
     try {
-      await login(email, password);
+      if (mode === 'register') {
+        await register(name, email, password, passwordConfirmation);
+      } else {
+        await login(email, password);
+      }
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || 'Les identifiants fournis sont incorrects.');
+      const validationErrors = err.response?.data?.errors;
+      const firstValidationError = validationErrors && Object.values(validationErrors)[0]?.[0];
+      setError(firstValidationError || err.response?.data?.message || 'Une erreur est survenue.');
     } finally {
       setSubmitting(false);
     }
@@ -39,6 +48,20 @@ export default function LoginPage() {
             </div>
           )}
 
+          {mode === 'register' && (
+            <div>
+              <label className="label">Nom complet</label>
+              <input
+                type="text"
+                className="input"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                autoFocus
+              />
+            </div>
+          )}
+
           <div>
             <label className="label">Email</label>
             <input
@@ -47,7 +70,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              autoFocus
+              autoFocus={mode === 'login'}
             />
           </div>
 
@@ -62,9 +85,36 @@ export default function LoginPage() {
             />
           </div>
 
+          {mode === 'register' && (
+            <div>
+              <label className="label">Confirmer le mot de passe</label>
+              <input
+                type="password"
+                className="input"
+                value={passwordConfirmation}
+                onChange={(e) => setPasswordConfirmation(e.target.value)}
+                required
+              />
+            </div>
+          )}
+
           <button type="submit" className="btn-primary w-full" disabled={submitting}>
-            {submitting ? 'Connexion...' : 'Se connecter'}
+            {submitting ? 'Création...' : mode === 'register' ? 'Créer un compte' : 'Se connecter'}
           </button>
+
+          <p className="text-center text-sm text-slate-500">
+            {mode === 'register' ? 'Vous avez déjà un compte ?' : "Vous n'avez pas encore de compte ?"}{' '}
+            <button
+              type="button"
+              className="font-medium text-primary-600 hover:underline"
+              onClick={() => {
+                setMode(mode === 'register' ? 'login' : 'register');
+                setError(null);
+              }}
+            >
+              {mode === 'register' ? 'Se connecter' : 'Créer un compte'}
+            </button>
+          </p>
         </form>
       </div>
     </div>
