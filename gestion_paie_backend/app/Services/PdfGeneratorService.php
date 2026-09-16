@@ -10,14 +10,6 @@ use Illuminate\Support\Str;
 
 class PdfGeneratorService
 {
-    /**
-     * Génère le PDF du bulletin de paie et l'enregistre sur le disque "public".
-     * Ne crée PAS l'enregistrement BulletinPaie en base — cela reste la
-     * responsabilité de l'appelant (PaieController::valider(), par exemple),
-     * afin que ce service reste concentré sur la seule génération du fichier.
-     *
-     * @return string Le chemin relatif du fichier sur le disque "public"
-     */
     public function genererBulletin(Paie $paie): string
     {
         $paie->loadMissing(['employe', 'primes', 'cotisations', 'retenues']);
@@ -34,11 +26,6 @@ class PdfGeneratorService
         return $chemin;
     }
 
-    /**
-     * Génère une attestation de travail pour un employé.
-     *
-     * @return string Le chemin relatif du fichier sur le disque "public"
-     */
     public function genererAttestationTravail(Employe $employe): string
     {
         $pdf = Pdf::loadView('pdf.attestation-travail', [

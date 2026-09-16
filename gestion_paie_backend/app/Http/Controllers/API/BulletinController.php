@@ -9,7 +9,7 @@ use App\Models\Paie;
 use App\Services\PdfGeneratorService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Storage;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class BulletinController extends Controller
 {
@@ -78,7 +78,7 @@ class BulletinController extends Controller
      * GET /api/bulletins/{bulletin}/pdf
      * Téléchargement direct du fichier PDF.
      */
-    public function download(Bulletin_Paie $bulletin): StreamedResponse|JsonResponse
+    public function download(Bulletin_Paie $bulletin): BinaryFileResponse|JsonResponse
     {
         $this->authorize('view', $bulletin);
 
@@ -88,8 +88,8 @@ class BulletinController extends Controller
             ], 404);
         }
 
-        return Storage::disk('public')->download(
-            $bulletin->fichier_pdf,
+        return response()->download(
+            Storage::disk('public')->path($bulletin->fichier_pdf),
             "bulletin_{$bulletin->paie->mois}_{$bulletin->paie->annee}.pdf"
         );
     }

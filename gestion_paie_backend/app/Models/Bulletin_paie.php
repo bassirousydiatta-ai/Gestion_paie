@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Storage;
 
 class Bulletin_paie extends Model
 {
@@ -23,6 +22,10 @@ class Bulletin_paie extends Model
         'date_generation' => 'datetime',
     ];
 
+    protected $appends = [
+        'url_telechargement',
+    ];
+
     /**
      * La fiche de paie correspondant à ce bulletin.
      */
@@ -36,6 +39,6 @@ class Bulletin_paie extends Model
      */
     public function getUrlTelechargementAttribute(): string
     {
-        return Storage::disk('public')->url($this->fichier_pdf);
+        return asset('storage/' . ltrim($this->fichier_pdf, '/'));
     }
 }

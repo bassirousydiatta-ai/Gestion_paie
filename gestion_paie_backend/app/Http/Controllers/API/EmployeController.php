@@ -10,7 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class EmployeController extends Controller
 {
@@ -134,14 +134,14 @@ class EmployeController extends Controller
     /**
      * GET /api/employes/{employe}/attestation-travail
      */
-    public function attestationTravail(Employe $employe): StreamedResponse
+    public function attestationTravail(Employe $employe): BinaryFileResponse
     {
         $this->authorize('view', $employe);
 
         $chemin = $this->pdfGeneratorService->genererAttestationTravail($employe);
 
-        return Storage::disk('public')->download(
-            $chemin,
+        return response()->download(
+            Storage::disk('public')->path($chemin),
             "attestation_travail_{$employe->nom}_{$employe->prenom}.pdf"
         );
 
