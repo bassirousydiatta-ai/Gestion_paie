@@ -29,7 +29,17 @@ export default function LoginPage() {
     } catch (err) {
       const validationErrors = err.response?.data?.errors;
       const firstValidationError = validationErrors && Object.values(validationErrors)[0]?.[0];
-      setError(firstValidationError || err.response?.data?.message || 'Une erreur est survenue.');
+      const status = err.response?.status;
+      const message = err.response?.data?.message;
+      setError(
+        firstValidationError ||
+          message ||
+          (status === 404
+            ? "L'API backend est introuvable. Vérifiez l'URL Railway configurée dans Netlify."
+            : !err.response
+              ? "Impossible de joindre l'API. Vérifiez l'URL Railway et la configuration CORS."
+              : 'Une erreur est survenue.')
+      );
     } finally {
       setSubmitting(false);
     }
