@@ -69,6 +69,7 @@ export default function EmployesPage() {
         {loading ? (
           <p className="text-slate-500 text-sm py-6 text-center">Chargement...</p>
         ) : (
+          <div className="table-scroll">
           <table className="data-table">
             <thead>
               <tr>
@@ -112,6 +113,7 @@ export default function EmployesPage() {
               )}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 

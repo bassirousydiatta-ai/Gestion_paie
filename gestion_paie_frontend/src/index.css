@@ -6,6 +6,75 @@ body {
   @apply bg-slate-50 text-slate-800;
 }
 
+html,
+body,
+#root {
+  min-width: 320px;
+  min-height: 100%;
+}
+
+.mobile-header {
+  @apply hidden items-center justify-between bg-primary-600 px-4 py-3 text-white;
+}
+
+.mobile-menu-button {
+  @apply inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 text-xl hover:bg-white/20;
+}
+
+.app-shell {
+  @apply flex min-h-screen;
+}
+
+.app-sidebar {
+  @apply flex w-64 shrink-0 flex-col bg-primary-600 text-white;
+}
+
+.app-main {
+  @apply min-w-0 flex-1 overflow-x-hidden;
+}
+
+.table-scroll {
+  @apply w-full overflow-x-auto;
+}
+
+@media (max-width: 767px) {
+  .mobile-header {
+    @apply flex;
+  }
+
+  .app-shell {
+    @apply block min-h-0;
+  }
+
+  .app-sidebar {
+    @apply hidden w-full;
+  }
+
+  .app-sidebar.is-open {
+    @apply flex;
+  }
+
+  .app-sidebar > nav {
+    @apply px-3 py-3;
+  }
+
+  .app-sidebar > div:last-child {
+    @apply px-4 py-3;
+  }
+
+  .card {
+    @apply rounded-lg p-4;
+  }
+
+  .btn {
+    @apply px-3 py-2;
+  }
+
+  table.data-table {
+    min-width: 640px;
+  }
+}
+
 .card {
   @apply bg-white rounded-xl border border-slate-200 shadow-sm p-5;
 }

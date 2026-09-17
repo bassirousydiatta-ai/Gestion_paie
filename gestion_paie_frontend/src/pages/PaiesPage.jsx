@@ -83,6 +83,7 @@ export default function PaiesPage() {
         {loading ? (
           <p className="text-slate-500 text-sm py-6 text-center">Chargement...</p>
         ) : (
+          <div className="table-scroll">
           <table className="data-table">
             <thead>
               <tr>
@@ -121,6 +122,7 @@ export default function PaiesPage() {
               )}
             </tbody>
           </table>
+          </div>
         )}
       </div>
 

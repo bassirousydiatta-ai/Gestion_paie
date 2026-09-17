@@ -72,6 +72,7 @@ export default function EmployeDetailPage() {
       <div className="card">
         <h2 className="font-semibold text-slate-700 mb-3">Historique des paies récentes</h2>
         {employe.paies?.length ? (
+          <div className="table-scroll">
           <table className="data-table">
             <thead>
               <tr><th>Période</th><th>Brut</th><th>Net</th><th>Statut</th></tr>
@@ -91,6 +92,7 @@ export default function EmployeDetailPage() {
               ))}
             </tbody>
           </table>
+          </div>
         ) : (
           <p className="text-sm text-slate-400">Aucune paie enregistrée pour le moment.</p>
         )}

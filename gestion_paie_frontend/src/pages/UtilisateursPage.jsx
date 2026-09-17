@@ -34,6 +34,7 @@ export default function UtilisateursPage() {
       </div>
 
       <div className="card">
+        <div className="table-scroll">
         <table className="data-table">
           <thead>
             <tr><th>Nom</th><th>Email</th><th>Rôle</th><th></th></tr>
@@ -53,6 +54,7 @@ export default function UtilisateursPage() {
             ))}
           </tbody>
         </table>
+        </div>
       </div>
 
       {modalOuvert && (
