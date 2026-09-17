@@ -40,6 +40,16 @@ class PayrollWorkflowTest extends TestCase
         ])
             ->assertOk()
             ->assertJsonStructure(['user', 'token']);
+
+        $this->postJson('/api/register', [
+            'name' => 'Comptable Test',
+            'email' => 'comptable@example.com',
+            'password' => 'Password123!',
+            'password_confirmation' => 'Password123!',
+            'role' => User::ROLE_COMPTABLE,
+        ])
+            ->assertCreated()
+            ->assertJsonPath('user.role', User::ROLE_COMPTABLE);
     }
 
     public function test_an_authenticated_user_can_list_postes_and_create_a_contract(): void

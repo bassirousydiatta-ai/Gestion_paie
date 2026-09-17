@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 export default function LoginPage() {
   const [mode, setMode] = useState('login');
   const [name, setName] = useState('');
+  const [role, setRole] = useState('rh');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
@@ -21,7 +22,7 @@ export default function LoginPage() {
     setSubmitting(true);
     try {
       if (mode === 'register') {
-        await register(name, email, password, passwordConfirmation);
+        await register(name, email, password, passwordConfirmation, role);
       } else {
         await login(email, password);
       }
@@ -71,6 +72,16 @@ export default function LoginPage() {
                 required
                 autoFocus
               />
+            </div>
+          )}
+
+          {mode === 'register' && (
+            <div>
+              <label className="label">Type de compte</label>
+              <select className="input" value={role} onChange={(e) => setRole(e.target.value)} required>
+                <option value="rh">Ressources humaines</option>
+                <option value="comptable">Comptable</option>
+              </select>
             </div>
           )}
 
