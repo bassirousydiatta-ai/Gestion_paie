@@ -72,7 +72,7 @@ class PayrollWorkflowTest extends TestCase
             'cin' => 'TEST-001',
             'date_naissance' => '1995-01-01',
             'date_embauche' => '2026-01-01',
-            'statut' => 'actif',
+            'statut' => 'archive',
         ]);
 
         $this->actingAs($user, 'sanctum')

@@ -11,6 +11,7 @@ const CHAMPS_VIDES = {
   adresse: '',
   telephone: '',
   date_embauche: '',
+  statut: 'actif',
 };
 
 export default function EmployeFormModal({ onClose, onCreated }) {
@@ -123,6 +124,15 @@ export default function EmployeFormModal({ onClose, onCreated }) {
           <div>
             <label className="label">Téléphone</label>
             <input className="input" value={form.telephone} onChange={(e) => update('telephone', e.target.value)} />
+          </div>
+
+          <div>
+            <label className="label">Statut</label>
+            <select className="input" value={form.statut} onChange={(e) => update('statut', e.target.value)} required>
+              <option value="actif">Actif</option>
+              <option value="archive">Archivé</option>
+            </select>
+            {erreurs.statut && <p className="text-red-600 text-xs mt-1">{erreurs.statut[0]}</p>}
           </div>
 
           <div className="flex justify-end gap-3 pt-2">
