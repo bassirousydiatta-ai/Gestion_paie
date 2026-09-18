@@ -56,6 +56,7 @@ class EmployeController extends Controller
         $data = $request->validate([
             'nom' => ['required', 'string', 'max:100'],
             'prenom' => ['required', 'string', 'max:100'],
+            'email' => ['required', 'email', 'max:150', 'unique:employes,email'],
             'cin' => ['required', 'string', 'max:20', 'unique:employes,cin'],
             'date_naissance' => ['required', 'date', 'before:-18 years'],
             'adresse' => ['nullable', 'string', 'max:255'],
@@ -94,6 +95,7 @@ class EmployeController extends Controller
         $data = $request->validate([
             'nom' => ['sometimes', 'string', 'max:100'],
             'prenom' => ['sometimes', 'string', 'max:100'],
+            'email' => ['sometimes', 'email', 'max:150', Rule::unique('employes', 'email')->ignore($employe->id)],
             'cin' => ['sometimes', 'string', 'max:20', Rule::unique('employes', 'cin')->ignore($employe->id)],
             'date_naissance' => ['sometimes', 'date', 'before:-18 years'],
             'adresse' => ['nullable', 'string', 'max:255'],

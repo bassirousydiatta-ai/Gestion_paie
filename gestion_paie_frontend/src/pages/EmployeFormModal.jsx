@@ -5,6 +5,7 @@ import AnomaliesAlert from '../components/AnomaliesAlert';
 const CHAMPS_VIDES = {
   nom: '',
   prenom: '',
+  email: '',
   cin: '',
   date_naissance: '',
   adresse: '',
@@ -69,6 +70,18 @@ export default function EmployeFormModal({ onClose, onCreated }) {
               <input className="input" value={form.prenom} onChange={(e) => update('prenom', e.target.value)} required />
               {erreurs.prenom && <p className="text-red-600 text-xs mt-1">{erreurs.prenom[0]}</p>}
             </div>
+          </div>
+
+          <div>
+            <label className="label">Email</label>
+            <input
+              type="email"
+              className="input"
+              value={form.email}
+              onChange={(e) => update('email', e.target.value)}
+              required
+            />
+            {erreurs.email && <p className="text-red-600 text-xs mt-1">{erreurs.email[0]}</p>}
           </div>
 
           <div>

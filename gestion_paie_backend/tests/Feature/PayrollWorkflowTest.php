@@ -68,6 +68,7 @@ class PayrollWorkflowTest extends TestCase
         $employe = Employe::create([
             'nom' => 'Diop',
             'prenom' => 'Awa',
+            'email' => 'awa.diop@example.com',
             'cin' => 'TEST-001',
             'date_naissance' => '1995-01-01',
             'date_embauche' => '2026-01-01',
