@@ -155,6 +155,7 @@ function CalculPaieModal({ moisParDefaut, anneeParDefaut, onClose, onCalculated 
   const [resultat, setResultat] = useState(null);
   const [anomalies, setAnomalies] = useState([]);
   const [erreurs, setErreurs] = useState({});
+  const [erreurGenerale, setErreurGenerale] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -173,6 +174,7 @@ function CalculPaieModal({ moisParDefaut, anneeParDefaut, onClose, onCalculated 
   async function handleCalculer(e) {
     e.preventDefault();
     setErreurs({});
+    setErreurGenerale(null);
     setSubmitting(true);
     try {
       const res = await paiesApi.calculer({
@@ -183,7 +185,13 @@ function CalculPaieModal({ moisParDefaut, anneeParDefaut, onClose, onCalculated 
       const anomaliesRes = await paiesApi.anomalies(res.data.id);
       setAnomalies(anomaliesRes.data.anomalies || []);
     } catch (err) {
-      if (err.response?.status === 422) setErreurs(err.response.data.errors || {});
+      if (err.response?.status === 422) {
+        setErreurs(err.response.data.errors || {});
+      } else if (err.response?.status === 403) {
+        setErreurGenerale('Seuls un administrateur ou un comptable peuvent calculer une paie.');
+      } else {
+        setErreurGenerale(err.response?.data?.message || "Le calcul de la paie a échoué. Vérifiez que l'employé possède un contrat.");
+      }
     } finally {
       setSubmitting(false);
     }
@@ -198,6 +206,12 @@ function CalculPaieModal({ moisParDefaut, anneeParDefaut, onClose, onCalculated 
         </div>
 
         <form onSubmit={handleCalculer} className="p-6 space-y-4">
+          {erreurGenerale && (
+            <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+              {erreurGenerale}
+            </div>
+          )}
+
           <div>
             <label className="label">Employé</label>
             <select className="input" value={form.employe_id} onChange={(e) => setForm((f) => ({ ...f, employe_id: e.target.value }))} required>
