@@ -56,7 +56,7 @@ class Paie extends Model
 
     public function cotisations(): BelongsToMany
     {
-        return $this->belongsToMany(Cotisation::class, 'paie_cotisation')
+        return $this->belongsToMany(Cotisation::class, 'cotisation_paie')
             ->withPivot('montant_calcule')
             ->withTimestamps();
     }
